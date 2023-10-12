@@ -1,58 +1,79 @@
 package centroFormacion;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class ModSerializado {
-	//Escritura
-	public void escribir(ArrayList<ModAlumno> alumnos) {
-		File archivo = new File("Alumnos.ser");
+	
+	public static final String FILENAME = "alumnos.ser";
+	
+	public static void guardar(ArrayList<ModAlumno> alumnos) {
+		
 		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
 		ObjectOutputStream oos = null;
+		
 		try {
-			fos = new FileOutputStream(archivo);
-			oos = new ObjectOutputStream(fos);
-			for (ModAlumno a : alumnos) {
-				oos.writeObject(a);
-			}
-		} catch (Exception ex) {
+			fos = new FileOutputStream(FILENAME);
+			bos = new BufferedOutputStream(fos);
+			oos = new ObjectOutputStream(bos);
 			
-		} finally {
-			try {
-				oos.close();
-				fos.close();
-			} catch (Exception ex) {
-				
+			for (ModAlumno modAlumno : alumnos) {
+				oos.writeObject(modAlumno);
+				oos.flush();
+				oos.reset();
 			}
+			
+			oos.close();
+			bos.close();
+			fos.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
+	
+	public static ArrayList<ModAlumno> cargar(){
 		
-	//Deserializado
-	public ArrayList<ModAlumno> deserializar() {
-		File archivo = new File("Alumnos.ser");
+		ArrayList<ModAlumno> alumnos = new ArrayList<>();
+		
 		FileInputStream fis = null;
+		BufferedInputStream bis = null;
 		ObjectInputStream ois = null;
-		ArrayList<ModAlumno> alumnos = new ArrayList<ModAlumno>();
+		
 		try {
-			fis = new FileInputStream(archivo);
-			ois = new ObjectInputStream(fis);
+			fis = new FileInputStream(FILENAME);
+			bis = new BufferedInputStream(fis);
+			ois = new ObjectInputStream(bis);
 			
 			while(true) {
-				alumnos.add((ModAlumno) ois.readObject());
+				alumnos.add((ModAlumno)ois.readObject());
 			}
-		} catch (Exception ex) {
 			
-		} finally {
+		}
+		catch (EOFException eof) {
+			//Saltando
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
 			try {
 				ois.close();
+				bis.close();
 				fis.close();
-			} catch (Exception ex) {
 				
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			
 		}
 		return alumnos;
 	}
