@@ -191,7 +191,7 @@ public class ModBinario {
 				String direc = dis.readUTF();
 				String telef = dis.readUTF();
 				String cursos = dis.readUTF();
-				HashMap<String, ModCurso> listaCursos = ModFicherosDeTexto.obtenerCursos(cursos);
+				HashMap<String, ModCurso> listaCursos = ModFicherosDeTexto.obtenerCursosDeCodigos(cursos);
 				listaProfesores.put(dni, new ModProfesor(dni, nombre, direc, telef, listaCursos));
 				cont++;
 			}

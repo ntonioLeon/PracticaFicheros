@@ -113,7 +113,7 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static LocalDate validarFechaNacimiento() { //Alumnos
+	public static LocalDate validarFechaNacimiento() { // Alumnos
 		int cont = 0;
 		boolean fin = false;
 		int d = -1;
@@ -275,6 +275,33 @@ public class ModValidador {
 			System.out.println("FALLOS = " + cont);
 		} while (cont < 5);
 		return null; // Si falla cinco veces devuelve null
+	}
+
+	public static String validarCodigo() { //Cursos
+		int cont = 0;
+		do {
+			System.out.println("INTRODUZCA EL CODIGO DEL CURSO, ESTE DEBERA EMPEZAR POR 'AE' E IR SEGUIDO DE UN NUMERO");
+			String cod = sc.nextLine();
+			cod = cod.trim();
+			if (!cod.isEmpty()) {
+				if (!cod.substring(0, 1).equalsIgnoreCase("AE")) {
+					if (isNumeric(cod.substring(3))) {
+						System.out.println("CODIGO VALIDO");
+						return cod;
+					} else {
+						System.out.println("EL CODIGO DEBE SER NUMERICO A PARTIR DE SU TERCER DIGITO");
+					}
+				} else {
+					System.out.println("EL CODIGO DEBE EMPEZAR POR 'AE'");
+					cont++;
+				}
+			} else {
+				System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
+				cont++;
+			}
+			System.out.println("FALLOS = " + cont);
+		} while (cont < 5);
+		return null;
 	}
 
 	private static boolean isNumeric(String cadena) { // comprueba que la cadena sea numerica

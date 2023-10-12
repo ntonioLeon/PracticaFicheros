@@ -8,9 +8,15 @@ public class ModCurso {
 	private String nombre;
 	private String descripcion;
 
-	public ModCurso( String nombre, String descripcion) {
+	public ModCurso(String nombre, String descripcion) { 	//Para cuando se construye un curso por primera vez.
 		cont++;
-		this.codigo = "Cod:"+cont;
+		this.codigo = "AE"+cont;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+	}
+	
+	public ModCurso(String cod, String nombre, String descripcion) {		//Para cuando se reconstruye.
+		this.codigo = cod;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
 	}

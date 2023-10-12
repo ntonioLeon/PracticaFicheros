@@ -102,31 +102,31 @@ public class ContGestionAlumnos {
 	private static boolean siNo(String modalidad, String campo, String antiguo, String nuevo) {
 		Scanner sc = new Scanner(System.in);
 		String elec = null;
-		if (modalidad.equals("modificar")) {
+		if (modalidad.equalsIgnoreCase("modificar")) {
 			System.out
-					.println("Esta seguro de querer " + modalidad + " el " + campo + " de " + antiguo + " a " + nuevo);
+					.println("ESTA SEGURO DE QUERER " + modalidad.toUpperCase() + " EL " + campo.toUpperCase() + " DE " + antiguo + " A " + nuevo);
 			do {
-				System.out.println("Pulse 1 para si, 2 para no");
+				System.out.println("PULSE 1 PARA SI, 2 PARA NO");
 				elec = sc.nextLine();
 				if (elec.equals("1")) {
 					return true;
 				} else if (elec.equals("2")) {
 					return false;
 				} else {
-					System.out.println("Recuerde usted");
+					System.out.println("RECUERDE QUE");
 				}
 			} while (!elec.equals("1") || !elec.equals("2"));
 		} else {
-			System.out.println("Seguro que desea borrar a " + antiguo + " de su lista de contactos?");
+			System.out.println("SEGURO QUE DESEA BORRAR A " + antiguo.toUpperCase() + " DE SU LISTA DE ALUMNOS?");
 			do {
-				System.out.println("Pulse 1 para si, 2 para no");
+				System.out.println("PULSE 1 PARA SI, 2 PARA NO");
 				elec = sc.nextLine();
 				if (elec.equals("1")) {
 					return true;
 				} else if (elec.equals("2")) {
 					return false;
 				} else {
-					System.out.println("Recuerde usted");
+					System.out.println("RECUERDE QUE");
 				}
 			} while (!elec.equals("1") || !elec.equals("2"));
 		}
