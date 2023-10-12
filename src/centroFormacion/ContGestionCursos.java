@@ -1,5 +1,8 @@
 package centroFormacion;
 
-public class ContGestionCursos {
+import java.util.HashMap;
 
+public class ContGestionCursos {			
+	
+	
 }

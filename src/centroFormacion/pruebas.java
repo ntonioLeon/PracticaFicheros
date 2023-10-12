@@ -11,7 +11,9 @@ public class pruebas {
 		//Pruebas LocalDate
 		//probarLocalDate();
 		//pruebaDni
-		probarDni();
+		//probarDni();
+		//prueba de data stream
+		//pruebaDataStream();
 
 	}
 	
@@ -22,13 +24,24 @@ public class pruebas {
 			alumnos.add(
 					new ModAlumno("" + i, "" + i, "" + i, "" + i, LocalDate.now(), new HashMap<String, ModCurso>()));
 		}
-		ser.escribir(alumnos);
+		ser.guardar(alumnos);
 		alumnos = null;
 
-		alumnos = ser.deserializar();
+		alumnos = ser.cargar();
 		for (ModAlumno a : alumnos) {
 			System.out.println(a);
 		}
+	}
+	
+	private static void pruebaDataStream() {
+		ModBinario bin = new ModBinario();
+		bin.mostrarContenidoDelFichero();
+		for (int i = 0; i < 3; i++) {
+			ModProfesor a = new ModProfesor(""+i,""+i,""+i,""+i,new HashMap<String, ModCurso>());
+			bin.guardar(a);
+		}
+		bin.mostrarContenidoDelFichero();
+		bin.mostrarUnProfesor("2");
 	}
 	
 	private static void probarLocalDate() {

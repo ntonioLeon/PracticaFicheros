@@ -13,7 +13,12 @@ public class ModValidador {
 			String nombre = sc.nextLine();
 			if (!nombre.trim().isEmpty()) {
 				if (nombre.trim().length() < 26) {
-					return nombre.trim(); // Si pasa las pruebas devuelve una String
+					if (!nombre.trim().contains(",") && !nombre.trim().contains(";")) {
+						System.out.println("NOMBRE VALIDO");
+						return nombre.trim(); // Si pasa las pruebas devuelve una String
+					} else {
+						System.out.println("EL CAMPO NOMBRE NO PUEDE CONTENER , NI ;");
+					}
 				} else {
 					System.out.println("EL CAMPO NOMBRE NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -34,7 +39,12 @@ public class ModValidador {
 			String apellido = sc.nextLine();
 			if (!apellido.trim().isEmpty()) {
 				if (apellido.trim().length() < 26) {
-					return apellido.trim(); // Si pasa las pruebas devuelve una String
+					if (!apellido.trim().contains(",") && !apellido.trim().contains(";")) {
+						System.out.println("APELLIDO VALIDO");
+						return apellido.trim(); // Si pasa las pruebas devuelve una String
+					} else {
+						System.out.println("EL CAMPO APELLIDO NO PUEDE CONTENER , NI ;");
+					}
 				} else {
 					System.out.println("EL CAMPO APELLIDO NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -57,6 +67,7 @@ public class ModValidador {
 			if (!telefono.isEmpty()) {
 				if (telefono.length() == 9) {
 					if (isNumeric(telefono)) {
+						System.out.println("TELEFONO VALIDO");
 						return telefono;
 					} else {
 						System.out.println("EL CAMPO TELEFONO SOLO PUEDE CONTENER NUMEROS");
@@ -76,14 +87,19 @@ public class ModValidador {
 		return null;
 	}
 
-	public static String validarDireccion() { // Alumnos
+	public static String validarDireccion() { // Alumnos y Profesores
 		int cont = 0;
 		do {
-			System.out.println("INTRODUZCA APELLIDO");
+			System.out.println("INTRODUZCA DIRECCION");
 			String direc = sc.nextLine();
 			if (!direc.trim().isEmpty()) {
 				if (direc.trim().length() < 26) {
-					return direc.trim(); // Si pasa las pruebas devuelve una String
+					if (!direc.trim().contains(",") && !direc.trim().contains(";")) {
+						System.out.println("DIRECCION VALIDA");
+						return direc.trim(); // Si pasa las pruebas devuelve una String
+					} else {
+						System.out.println("EL CAMPO APELLIDO NO PUEDE CONTENER , NI ;");
+					}
 				} else {
 					System.out.println("EL CAMPO DIRECCION NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -97,7 +113,7 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static LocalDate validarFechaNacimiento() {
+	public static LocalDate validarFechaNacimiento() { //Alumnos
 		int cont = 0;
 		boolean fin = false;
 		int d = -1;
@@ -177,6 +193,7 @@ public class ModValidador {
 						if (Integer.parseInt(anno) > 1949 && Integer.parseInt(anno) < 2010) {
 							y = Integer.parseInt(anno);
 							LocalDate fecha = LocalDate.of(y, m, d);
+							System.out.println("FECHA DE NACIMIENTO VALIDA");
 							return fecha;
 						} else {
 							System.out.println("EL CAMPO ANNO SOLO PUEDE CONTENER NUMEROS DEL 1950 AL 2010");
@@ -202,13 +219,14 @@ public class ModValidador {
 		return null;
 	}
 
-	public static String validarDescripcion() { // Alumnos
+	public static String validarDescripcion() { // Cursos
 		int cont = 0;
 		do {
 			System.out.println("INTRODUZCA DESCRIPCION");
 			String descipcion = sc.nextLine();
 			if (!descipcion.trim().isEmpty()) {
 				if (descipcion.trim().length() < 51) {
+					System.out.println("DESCRIPCION VALIDA");
 					return descipcion.trim(); // Si pasa las pruebas devuelve una String
 				} else {
 					System.out.println("EL CAMPO DESCRIPCION NO PUEDE SUPERAR LOS 50 CARACTERES");
@@ -223,7 +241,7 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static String validarDNI() { // Alumnos
+	public static String validarDNI() { // Profesores
 		int cont = 0;
 		do {
 			System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
@@ -233,23 +251,27 @@ public class ModValidador {
 				if (dni.length() == 9) {
 					if (isNumeric(dni.substring(0, 7))) {
 						if (isAlfabetic(dni.substring(8))) {
+							System.out.println("DNI VALIDO");
 							return dni;
 						} else {
-							System.out.println("FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+							System.out.println(
+									"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 							cont++;
 						}
 					} else {
-						System.out.println("FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+						System.out.println(
+								"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 						cont++;
 					}
-				}else {
-					System.out.println("EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+				} else {
+					System.out.println(
+							"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 					cont++;
 				}
 			} else {
 				System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
 				cont++;
-			}			
+			}
 			System.out.println("FALLOS = " + cont);
 		} while (cont < 5);
 		return null; // Si falla cinco veces devuelve null

@@ -40,6 +40,7 @@ public class VisMenu {
 
 						break;
 					case "6":
+
 						break;
 					case "0":
 
@@ -61,18 +62,20 @@ public class VisMenu {
 					elecProfesores = sc.nextLine();
 					switch (elecProfesores) {
 					case "1":
-
+						ContGestionProfesores.alta();
 						break;
 					case "2":
-
+						ContGestionProfesores.baja();
 						break;
 					case "3":
 
 						break;
 					case "4":
-
+						ContGestionProfesores.buscar();
 						break;
 					case "5":
+						ContGestionProfesores.mostrarTodosLosProfesores();
+						break;
 					case "6":
 
 						break;
@@ -111,6 +114,7 @@ public class VisMenu {
 
 						break;
 					case "6":
+
 						break;
 					case "0":
 
