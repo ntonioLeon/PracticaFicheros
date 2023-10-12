@@ -18,16 +18,15 @@ public class pruebas {
 	}
 	
 	private static void pruebasSerializado() {
-		ModSerializado ser = new ModSerializado();
 		ArrayList<ModAlumno> alumnos = new ArrayList<ModAlumno>();
 		for (int i = 0; i < 3; i++) {
 			alumnos.add(
 					new ModAlumno("" + i, "" + i, "" + i, "" + i, LocalDate.now(), new HashMap<String, ModCurso>()));
 		}
-		ser.guardar(alumnos);
+		ModSerializado.guardar(alumnos);
 		alumnos = null;
 
-		alumnos = ser.cargar();
+		alumnos = ModSerializado.cargar();
 		for (ModAlumno a : alumnos) {
 			System.out.println(a);
 		}

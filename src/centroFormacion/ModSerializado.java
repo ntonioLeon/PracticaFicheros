@@ -77,4 +77,19 @@ public class ModSerializado {
 		}
 		return alumnos;
 	}
+
+	public static void cargarUnAlumno(String nombre) {
+		boolean encontrado = false;
+		ArrayList<ModAlumno> listaAlumno = ModSerializado.cargar();
+		for (ModAlumno modAlumno : listaAlumno) {
+			if(modAlumno.getNombre().equals(nombre)) {
+				System.out.println("COINCIDENCIA ENCONTRADO:");
+				System.out.println(modAlumno.toString());
+				encontrado = true;
+			}
+		}
+		if(!encontrado) {
+			System.out.println("NO SE HA ENCONTRADO NINGUNA COINCIDENCIA.");
+		}
+	}
 }
