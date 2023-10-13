@@ -1,21 +1,24 @@
 package centroFormacion;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ModCurso {
 	private static int cont = 0;
 	private String codigo;
 	private String nombre;
 	private String descripcion;
+	private ModProfesor profesor;
+	private HashMap<String, ModAlumno> alumnos;
 
-	public ModCurso(String nombre, String descripcion) { 	//Para cuando se construye un curso por primera vez.
+	public ModCurso(String nombre, String descripcion) { // Para cuando se construye un curso por primera vez.
 		cont++;
-		this.codigo = "AE"+cont;
+		this.codigo = "AE" + cont;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.alumnos = new HashMap<String, ModAlumno>();
 	}
-	
-	public ModCurso(String cod, String nombre, String descripcion) {		//Para cuando se reconstruye.
+
+	public ModCurso(String cod, String nombre, String descripcion) { // Para cuando se reconstruye.
 		this.codigo = cod;
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -45,8 +48,40 @@ public class ModCurso {
 		this.descripcion = descripcion;
 	}
 
+	public ModProfesor getProfesor() {
+		return profesor;
+	}
+
+	public void setProfesor(ModProfesor profesor) {
+		this.profesor = profesor;
+	}
+
+	public HashMap<String, ModAlumno> getAlumnos() {
+		return alumnos;
+	}
+
+	public void setAlumnos(HashMap<String, ModAlumno> alumnos) {
+		this.alumnos = alumnos;
+	}
+
 	@Override
 	public String toString() {
-		return "ModCurso [codigo=" + codigo + ", nombre=" + nombre + ", descripcion=" + descripcion + "]";
+		if (this.profesor == null && this.alumnos.isEmpty()) {
+			return this.codigo + "," + this.nombre + "," + this.descripcion;
+		} else if (this.profesor == null && !this.alumnos.isEmpty()) {
+			return this.codigo + "," + this.nombre + "," + this.descripcion+","+printearAlumnos();
+		} else if (this.profesor != null && this.alumnos.isEmpty()) {
+			return this.codigo + "," + this.nombre + "," + this.descripcion+","+this.profesor.getNombre()+";"+this.profesor.getDni();
+		} else {
+			return this.codigo + "," + this.nombre + "," + this.descripcion+","+this.profesor.getNombre()+";"+this.profesor.getDni()+","+printearAlumnos();
+		}
+	}
+	
+	private String printearAlumnos() {
+		String aux = "";
+		for (String a : this.alumnos.keySet()) {
+			aux = a+";"+aux;
+		}
+		return aux;
 	}
 }

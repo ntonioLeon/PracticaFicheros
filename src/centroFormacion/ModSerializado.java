@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ModSerializado {
 	
@@ -91,5 +92,39 @@ public class ModSerializado {
 		if(!encontrado) {
 			System.out.println("NO SE HA ENCONTRADO NINGUNA COINCIDENCIA.");
 		}
+	}
+	
+	public static void borrarDeCursoEnCascada(String cod) {
+		ArrayList<ModAlumno> alumnos = cargar();
+		if (!alumnos.isEmpty()) {
+			for(int i = 0 ; i < alumnos.size(); i++) {
+				if (alumnos.get(i).getCursos().get(cod) != null) {
+					alumnos.get(i).getCursos().remove(cod);
+				}
+			}			
+			guardar(alumnos);
+		}
+	}
+	
+	public static HashMap<String, ModAlumno> obtenerAlumnosPorNomYApe(String cadena) {
+		HashMap<String, ModAlumno> HashAlumnos = new HashMap<String, ModAlumno>();
+		ArrayList<ModAlumno> alumnos = cargar();
+		String[] nombresYApellidos = cadena.split(";"); 
+		String[] nombre = new String[nombresYApellidos.length];
+		String[] apellido = new String[nombresYApellidos.length];				
+		if (!alumnos.isEmpty()) {
+			for (int i = 0; i < nombresYApellidos.length; i++) {
+				nombre[i] = nombresYApellidos[i].split("_")[0];
+				apellido[i] = nombresYApellidos[i].split("_")[1];		
+			}
+			for (int i = 0; i < alumnos.size(); i++) {
+				for (int j = 0; j < nombre.length; i++) {
+					if (nombre[j].equals(alumnos.get(i).getNombre()) && apellido[j].equals(alumnos.get(i).getApellido())) {
+						HashAlumnos.put(nombre[j]+"_"+apellido[j] , alumnos.get(i));
+					}
+				}
+			}
+		}
+		return HashAlumnos;
 	}
 }

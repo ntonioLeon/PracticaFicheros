@@ -34,9 +34,13 @@ public class ContGestionCursos {
 			if (cursos.get(cod) != null) {
 				if (siNo("borrar", "", cursos.get(cod).getNombre() + " CON CODIGO: " + cursos.get(cod).getCodigo(),
 						"")) {
+					ModBinario.borradoDeCursoEnCascada(cod);
+					ModSerializado.borrarDeCursoEnCascada(cod);
 					cursos.remove(cod);
 					System.out.println("CURSO BORRADO");
 					ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+				} else {
+					System.out.println("BAJA CANCELADA");
 				}
 			} else {
 				System.out.println(
@@ -49,23 +53,22 @@ public class ContGestionCursos {
 			}
 		}
 	}
-
-	// if (siNo("MODIFICAR", "", cursos.get(cod).getNombre() + " CON CODIGO: " +
-	// cursos.get(cod).getCodigo(),"")) {
+	
 	public static void modificar() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("MENU DE MODIFICAR:");
-		System.out.println("EL SIGUIENTE CODIGO VALDRA PARA IDENTIFICAR CURSO QUE DESEA BORMODIFICARRAR");
+		System.out.println("EL SIGUIENTE CODIGO VALDRA PARA IDENTIFICAR CURSO QUE DESEA RMODIFICARRAR");
 		String cod = ModValidador.validarCodigo();
 		if (cod != null) {
 			HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+			System.out.println(cursos.size());
 			if (cursos.get(cod) != null) {
 				String elec = "";
 				do {
+					System.out.println("INTODUZCA 1 PARA MODIFICAR NOMBRE\n2 PARA MODIFICAR DESCRIPCION\n0 PARA SALIR");
 					elec = sc.nextLine();
 					switch (elec) {
-					case "1":
-						System.out.println("INTODUZCA 1 PARA MODIFICAR NOMBRE\n2 PARA MODIFICAR DESCRIPCION");
+					case "1":						
 						String nomb = ModValidador.validarNombre();
 						if (nomb != null) {
 							if (siNo("modificar", "NOMBRE", cursos.get(cod).getNombre(), nomb)) {
@@ -90,7 +93,7 @@ public class ContGestionCursos {
 						}
 						break;
 					case "0":
-						//Para que no salte el default con la salida
+						// Para que no salte el default con la salida
 						break;
 					default:
 						System.out.println("INTRODUZCA SOLO OPCIONES VALIDAS");

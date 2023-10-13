@@ -14,7 +14,7 @@ public class ContGestionAlumnos {
 		String dni = null, nombre = null, direc = null, telef = null;
 		LocalDate naz = null;
 
-		dni = ModValidador.validarDNI();
+		dni = ModValidador.validarDNI(1);
 		if (dni != null) {
 			nombre = ModValidador.validarNombre();
 		}

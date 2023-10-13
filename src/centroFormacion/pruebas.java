@@ -49,7 +49,7 @@ public class pruebas {
 	}
 	
 	private static void probarDni() {
-		String dni = ModValidador.validarDNI();
+		String dni = ModValidador.validarDNI(1);
 		System.out.println(dni);
 	}
 }

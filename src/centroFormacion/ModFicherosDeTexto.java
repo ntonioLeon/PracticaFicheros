@@ -20,7 +20,7 @@ public class ModFicherosDeTexto {
 			bw = new BufferedWriter(fw);
 			pw = new PrintWriter(bw);
 
-			pw.write(curso.getCodigo() + "," + curso.getNombre() + "," + curso.getDescripcion() + "\n");
+			pw.write(curso.toString()+"\n");
 
 		} catch (Exception ex) {
 
@@ -43,12 +43,13 @@ public class ModFicherosDeTexto {
 			fw = new FileWriter(cursos);
 			bw = new BufferedWriter(fw);
 			pw = new PrintWriter(bw);
-			for (String a : listaCursos.keySet()) {
-				pw.write(listaCursos.get(a).getCodigo() + "," + listaCursos.get(a).getNombre() + ","
-						+ listaCursos.get(a).getDescripcion());
+			System.out.println(listaCursos.size());
+			for (String a : listaCursos.keySet()) {						
+				System.out.println(listaCursos.get(a).toString());
+				pw.write(listaCursos.get(a).toString());
 			}
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		} finally {
 			try {
 				pw.close();
@@ -72,6 +73,7 @@ public class ModFicherosDeTexto {
 				String cod = line.split(",")[0];
 				if (codigo.equals(cod)) {
 					System.out.println(line);
+					esta = true;
 				}
 			}
 		} catch (Exception ex) {
@@ -120,13 +122,25 @@ public class ModFicherosDeTexto {
 			br = new BufferedReader(fr);
 			String line = "";
 			while ((line = br.readLine()) != null) {
-				String cod = line.split(",")[0];
+				int cantidad = line.split(",").length; 
+ 				String cod = line.split(",")[0];
 				String nomb = line.split(",")[1];
-				String descripcion = line.split(",")[2];
-				listaCursos.put(cod, new ModCurso(cod, nomb, descripcion));
+				String descripcion = line.split(",")[2];				
+				ModProfesor prof = null;
+				HashMap<String, ModAlumno> alumns = new HashMap<String, ModAlumno>();
+				if (cantidad > 3) {
+					prof = ModBinario.ObtenerUnProfesor(line.split(",")[3].split(";")[1]);
+				} 
+				if (cantidad > 4) {
+					alumns = ModSerializado.obtenerAlumnosPorNomYApe(line.split(",")[4]);
+				}
+				ModCurso curs = new ModCurso(cod, nomb, descripcion);
+				curs.setProfesor(prof);
+				curs.setAlumnos(alumns);
+				listaCursos.put(curs.getCodigo(), curs);
 			}
 		} catch (Exception ex) {
-
+			ex.printStackTrace();
 		} finally {
 			try {
 				br.close();
@@ -153,7 +167,8 @@ public class ModFicherosDeTexto {
 				String[] listaCodigos = codigos.split(";");
 				for (int i = 0; i < listaCodigos.length; i++) {
 					if (listaCodigos[i].equals(cod)) {
-						listaCursos.put(cod, new ModCurso(cod, nomb, descripcion));
+						ModCurso curs = new ModCurso(cod, nomb, descripcion);
+						listaCursos.put(curs.getCodigo(), curs);
 					}
 				}
 			}
@@ -168,5 +183,16 @@ public class ModFicherosDeTexto {
 			}
 		}
 		return listaCursos;
+	}
+	
+	public static void borrarDeProfesoresEnCascade(ModProfesor profesor) {
+		HashMap<String, ModCurso> listaCursos = new HashMap<String, ModCurso>();
+		if (!listaCursos.isEmpty()) {
+			for (String a : listaCursos.keySet()) {
+				if (listaCursos.get(a).getProfesor().getDni().equals(profesor.getDni())) {
+					listaCursos.get(a).setProfesor(null);
+				}
+			}
+		}
 	}
 }

@@ -241,46 +241,92 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static String validarDNI() { // Profesores
+	public static String validarDNI(int i) { // Profesores
 		int cont = 0;
-		do {
-			System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
-			String dni = sc.nextLine();
-			dni = dni.trim();
-			if (!dni.isEmpty()) {
-				if (dni.length() == 9) {
-					if (isNumeric(dni.substring(0, 7))) {
-						if (isAlfabetic(dni.substring(8))) {
-							System.out.println("DNI VALIDO");
-							return dni;
+		switch (i) {
+		case 1:
+			do {
+				System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
+				String dni = sc.nextLine();
+				dni = dni.trim();
+				if (!dni.isEmpty()) {
+					if (dni.length() == 9) {
+						if (isNumeric(dni.substring(0, 7))) {
+							if (isAlfabetic(dni.substring(8))) {
+								if (!ModBinario.comprobarDNI(dni)) { //Alta, queremos que no este
+								System.out.println("DNI VALIDO");
+								return dni;
+								} else {
+									System.out.println(
+											"YA EXISTE UN PROFESOR CON EL DNI ");
+									cont++;
+								}
+							} else {
+								System.out.println(
+										"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+								cont++;
+							}
 						} else {
 							System.out.println(
-									"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+									"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 							cont++;
 						}
 					} else {
 						System.out.println(
-								"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+								"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 						cont++;
 					}
 				} else {
-					System.out.println(
-							"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+					System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
 					cont++;
 				}
-			} else {
-				System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
-				cont++;
-			}
-			System.out.println("FALLOS = " + cont);
-		} while (cont < 5);
+				System.out.println("FALLOS = " + cont);
+			} while (cont < 5);
+			break;
+		case 2:
+			do {
+				System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
+				String dni = sc.nextLine();
+				dni = dni.trim();
+				if (!dni.isEmpty()) {
+					if (dni.length() == 9) {
+						if (isNumeric(dni.substring(0, 7))) {
+							if (isAlfabetic(dni.substring(8))) { 
+								System.out.println("DNI VALIDO"); //Aqui, queremos que coicida, por lo que dejamos pasar un posibl dni repetido pues sera necesario para encontrar profespres
+								return dni;
+							} else {
+								System.out.println(
+										"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+								cont++;
+							}
+						} else {
+							System.out.println(
+									"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+							cont++;
+						}
+					} else {
+						System.out.println(
+								"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+						cont++;
+					}
+				} else {
+					System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
+					cont++;
+				}
+				System.out.println("FALLOS = " + cont);
+			} while (cont < 5);
+			break;
+		default:
+			break;
+		}
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static String validarCodigo() { //Cursos
+	public static String validarCodigo() { // Cursos
 		int cont = 0;
 		do {
-			System.out.println("INTRODUZCA EL CODIGO DEL CURSO, ESTE DEBERA EMPEZAR POR 'AE' E IR SEGUIDO DE UN NUMERO");
+			System.out
+					.println("INTRODUZCA EL CODIGO DEL CURSO, ESTE DEBERA EMPEZAR POR 'AE' E IR SEGUIDO DE UN NUMERO");
 			String cod = sc.nextLine();
 			cod = cod.trim();
 			if (!cod.isEmpty()) {
