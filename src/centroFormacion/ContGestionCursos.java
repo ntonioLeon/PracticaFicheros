@@ -130,6 +130,8 @@ public class ContGestionCursos {
 	public static void mostrarTodosLosProfesores() {
 		ModFicherosDeTexto.mostrarTodos();
 	}
+	
+	
 
 	private static boolean siNo(String modalidad, String campo, String antiguo, String nuevo) {
 		Scanner sc = new Scanner(System.in);
