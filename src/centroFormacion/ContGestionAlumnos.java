@@ -27,18 +27,22 @@ public class ContGestionAlumnos {
 		if (telef != null && direc != null && apellido != null && nombre != null) {
 			naz = ModValidador.validarFechaNacimiento();
 			if (naz != null && telef != null && direc != null && apellido != null && nombre != null) {
-				// Se procede al alta
-
-				ArrayList<ModAlumno> nuevoAlumno = new ArrayList<>();
-				nuevoAlumno.add(new ModAlumno(nombre, apellido, direc, telef, naz, new HashMap<String, ModCurso>()));
-				ModSerializado.guardar(nuevoAlumno);
+				
+				if(!repetido(nombre,apellido)) {
+					listaAlumnos.add(new ModAlumno(nombre, apellido, direc, telef, naz, new HashMap<String, ModCurso>()));
+					ModSerializado.guardar(listaAlumnos);
+				}else {
+					System.out.println("YA HAY UN ALUMNO CON EL MISMO NOMBRE Y APELLIDO");
+				}
+				
+				
 			} else {
-				if (dni == null) {
-					System.out.println(
-							"EL ALTA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: DNI");
-				} else if (nombre == null) {
+				if (nombre == null) {
 					System.out.println(
 							"EL ALTA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: NOMBRE");
+				} else if (apellido == null) {
+					System.out.println(
+							"EL ALTA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: APELLIDO");
 				} else if (direc == null) {
 					System.out.println(
 							"EL ALTA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: DIRECCION");
@@ -57,10 +61,12 @@ public class ContGestionAlumnos {
 		System.out.println("MENU DE BAJA:");
 		System.out.println("EL SIGUIENTE NOMBRE VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA BORRAR");
 		String nom = ModValidador.validarNombre();
-		if (nom != null) {
+		System.out.println("EL SIGUIENTE APELLIDO VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA BORRAR");
+		String ape = ModValidador.validarApellido();
+		if (nom != null || ape != null) {
 			ArrayList<ModAlumno> listaAlumnos = ModSerializado.cargar();
 			for (ModAlumno modAlumno : listaAlumnos) {
-				if (modAlumno.getNombre().equals(nom)) {
+				if (modAlumno.getNombre().equals(nom) &&modAlumno.getApellido().equals(ape)) {
 					if (siNo("borrar", "", modAlumno.getNombre(), "")) {
 					listaAlumnos.remove(modAlumno);
 					System.out.println("BAJA REALIZADA.");
@@ -73,16 +79,22 @@ public class ContGestionAlumnos {
 		} else {
 			if (nom == null) {
 				System.out.println(
-						"LA BAJA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: DNI");
+						"LA BAJA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: NOMBRE");
+			}
+			if (ape == null) {
+				System.out.println(
+						"LA BAJA NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: APELLIDO");
 			}
 		}
 	}
 
 	public static void buscar() {
 		System.out.println("MENU DE BUSQUEDA:");
-		System.out.println("EL SIGUIENTE DNI VALDRA PARA IDENTIFICAR AL PROFESOR QUE DESEA BUSCAR");
+		System.out.println("EL SIGUIENTE NOMBRE VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA BUSCAR");
 		String nom = ModValidador.validarNombre();
-		if (nom != null) {
+		System.out.println("EL SIGUIENTE APELLIDO VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA BUSCAR");
+		String ape = ModValidador.validarApellido();
+		if (nom != null || ape != null) {
 			ModSerializado.cargarUnAlumno(nom);
 		} else {
 			if (nom == null) {
@@ -129,6 +141,17 @@ public class ContGestionAlumnos {
 					System.out.println("RECUERDE QUE");
 				}
 			} while (!elec.equals("1") || !elec.equals("2"));
+		}
+		return false;
+	}
+	
+	private static boolean repetido(String Nombre, String Apellido) {
+		listaAlumnos = ModSerializado.cargar();
+		for (ModAlumno modAlumno : listaAlumnos) {
+			if (modAlumno.getNombre().equals(Nombre) &&modAlumno.getApellido().equals(Apellido)) {
+				return true;
+			}
+			
 		}
 		return false;
 	}
