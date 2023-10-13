@@ -10,18 +10,19 @@ public class ModCurso {
 	private ModProfesor profesor;
 	private HashMap<String, ModAlumno> alumnos;
 
-	public ModCurso(String nombre, String descripcion) { // Para cuando se construye un curso por primera vez.
+	public ModCurso(String nomb, String descrip) { // Para cuando se construye un curso por primera vez.
 		cont++;
 		this.codigo = "AE" + cont;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
+		this.nombre = nomb;
+		this.descripcion = descrip;
 		this.alumnos = new HashMap<String, ModAlumno>();
 	}
 
-	public ModCurso(String cod, String nombre, String descripcion) { // Para cuando se reconstruye.
+	public ModCurso(String cod, String nomb, String descrip) { // Para cuando se reconstruye.
 		this.codigo = cod;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
+		this.nombre = nomb;
+		this.descripcion = descrip;
+		this.alumnos = new HashMap<String, ModAlumno>();
 	}
 
 	public String getCodigo() {

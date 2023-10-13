@@ -330,7 +330,8 @@ public class ModValidador {
 			String cod = sc.nextLine();
 			cod = cod.trim();
 			if (!cod.isEmpty()) {
-				if (!cod.substring(0, 1).equalsIgnoreCase("AE")) {
+				System.out.println(cod.substring(0, 2));
+				if (cod.substring(0, 2).equals("AE")) {
 					if (isNumeric(cod.substring(3))) {
 						System.out.println("CODIGO VALIDO");
 						return cod;

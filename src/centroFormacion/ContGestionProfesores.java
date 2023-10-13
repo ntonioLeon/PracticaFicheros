@@ -142,6 +142,7 @@ public class ContGestionProfesores {
 						System.out.println("INTRODUZCA SOLO OPCIONES VALIDAS");
 						break;
 					}
+					ModBinario.reEscribirFichero(profesores);
 				} while (!elec.equals("0"));
 			} else {
 				System.out.println(
@@ -178,6 +179,7 @@ public class ContGestionProfesores {
 		String dni = ModValidador.validarDNI(2);
 		if (dni != null) {
 			HashMap<String, ModProfesor> profesores = ModBinario.obtenerHashDeProfes();
+			HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
 			if (profesores.get(dni) != null) {
 				String elec = "";
 				do {
@@ -188,18 +190,17 @@ public class ContGestionProfesores {
 					case "1":						
 							String cod = ModValidador.validarCodigo();
 							if (cod != null) {
-								if (profesores.get(dni).getCursos().get(cod) != null) {
-									if (relacionar(profesores.get(dni), profesores.get(dni).getCursos().get(cod))) {
-										HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();										
-										profesores.get(dni).getCursos().put(cod, cursos.get(cod));
+								if (profesores.get(dni).getCursos().get(cod) == null) {									
+									if (relacionar(profesores.get(dni).getNombre(), cursos.get(cod).getNombre())) {																				
+										profesores.get(dni).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
 										cursos.get(cod).setProfesor(profesores.get(dni));
-										System.out.println(profesores.get(dni).getNombre()+ "YA NO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
+										System.out.println(profesores.get(dni).getNombre()+ " AHORA ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
 									} else {										
-										System.out.println(profesores.get(dni).getNombre()+ "SEGUIRA SIENDO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
+										System.out.println(profesores.get(dni).getNombre()+ " YA NO SERA EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
 									}
 								} else {
 									System.out.println(
-											"LA RELACION NO SE PUDO REALIZAR DEBIDO A QUE EL CODIGO INTRODUCIDO NO SE CORRESPONDE CON EL DE NINGUN CURSO IMPARTIDO POR EL DOCENTE");
+											"LA RELACION NO SE PUDO REALIZAR DEBIDO A QUE EL CODIGO INTRODUCIDO YA EXITENTE DENTRO DE LAS DOCENCIAS DEL PROFESOR");
 								}
 							} else {
 								System.out.println(
@@ -212,13 +213,11 @@ public class ContGestionProfesores {
 							if (cod != null) {
 								if (profesores.get(dni).getCursos().get(cod) != null) {
 									if (desRelacionar(profesores.get(dni), profesores.get(dni).getCursos().get(cod))) {
-										profesores.get(dni).getCursos().remove(cod);
-										HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+										profesores.get(dni).getCursos().remove(cod);										
 										cursos.get(cod).setProfesor(null);
-										cursos = null;
-										System.out.println(profesores.get(dni).getNombre()+ "YA NO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
+										System.out.println(profesores.get(dni).getNombre()+ " YA NO ES EL PROFESOR DE "+cursos.get(cod).getNombre());
 									} else {										
-										System.out.println(profesores.get(dni).getNombre()+ "SEGUIRA SIENDO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
+										System.out.println(profesores.get(dni).getNombre()+ " SEGUIRA SIENDO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
 									}
 								} else {
 									System.out.println(
@@ -240,6 +239,8 @@ public class ContGestionProfesores {
 						System.out.println("INTRODUZCA SOLO OPCIONES VALIDAS");
 						break;
 					}
+					ModBinario.reEscribirFichero(profesores);
+					ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 				} while (!elec.equals("0"));
 			} else {
 				System.out.println(
@@ -286,10 +287,10 @@ public class ContGestionProfesores {
 		return false;
 	}
 	
-	private static boolean relacionar(ModProfesor prof, ModCurso curs) {
+	private static boolean relacionar(String prof, String curs) {
 		Scanner sc = new Scanner(System.in);
 		String elec = null;
-		System.out.println("SEGURO QUE QUIERE QUE "+prof.getNombre()+" IMPARTA "+curs.getNombre());
+		System.out.println("SEGURO QUE QUIERE QUE "+prof +" IMPARTA "+curs);
 		do {
 			System.out.println("PULSE 1 PARA SI, 2 PARA NO");
 			elec = sc.nextLine();

@@ -117,15 +117,16 @@ public class ModFicherosDeTexto {
 		HashMap<String, ModCurso> listaCursos = new HashMap<String, ModCurso>();
 		FileReader fr = null;
 		BufferedReader br = null;
+		String cod = "", nomb = "", descripcion = "";
 		try {
 			fr = new FileReader(cursos);
 			br = new BufferedReader(fr);
 			String line = "";
 			while ((line = br.readLine()) != null) {
 				int cantidad = line.split(",").length; 
- 				String cod = line.split(",")[0];
-				String nomb = line.split(",")[1];
-				String descripcion = line.split(",")[2];				
+ 				cod = line.split(",")[0];
+				nomb = line.split(",")[1];
+				descripcion = line.split(",")[2];				
 				ModProfesor prof = null;
 				HashMap<String, ModAlumno> alumns = new HashMap<String, ModAlumno>();
 				if (cantidad > 3) {
@@ -138,6 +139,7 @@ public class ModFicherosDeTexto {
 				curs.setProfesor(prof);
 				curs.setAlumnos(alumns);
 				listaCursos.put(curs.getCodigo(), curs);
+				System.out.println(curs.toString());
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
