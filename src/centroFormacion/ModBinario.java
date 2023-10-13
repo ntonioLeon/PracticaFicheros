@@ -114,7 +114,7 @@ public class ModBinario {
 
 		} catch (Exception ex) {
 			if (cont == 0) {
-				System.out.println("El archivo no tenia contenido");
+				System.out.println("El archivo no tenia contenido".toUpperCase());
 			}
 		} finally {
 			try {
@@ -192,7 +192,8 @@ public class ModBinario {
 				String telef = dis.readUTF();
 				String cursos = dis.readUTF();
 				HashMap<String, ModCurso> listaCursos = ModFicherosDeTexto.obtenerCursosDeCodigos(cursos);
-				listaProfesores.put(dni, new ModProfesor(dni, nombre, direc, telef, listaCursos));
+				ModProfesor prof = new ModProfesor(dni, nombre, direc, telef, listaCursos);
+				listaProfesores.put(prof.getDni(), prof);
 				cont++;
 			}
 
@@ -211,6 +212,28 @@ public class ModBinario {
 		}
 		return listaProfesores;
 	}
+		
+	public static void borradoDeCursoEnCascada(String cod) {
+		HashMap<String, ModProfesor> profesores = obtenerHashDeProfes();
+		if (!profesores.isEmpty()) {			
+			for (String a : profesores.keySet()) {
+				if (profesores.get(a).getCursos().get(cod) != null) {
+					profesores.get(a).getCursos().remove(cod);
+				}
+			}
+			reEscribirFichero(profesores);
+		}
+	}
+	
+	public static ModProfesor ObtenerUnProfesor(String dni) {
+		HashMap<String, ModProfesor> profesores = obtenerHashDeProfes();
+		if (!profesores.isEmpty()) {
+			if (profesores.get(dni) != null) {
+				return profesores.get(dni);
+			}
+		}
+		return null;
+	}
 
 	private static void iniciar(File archivo) {
 		try {
@@ -220,5 +243,19 @@ public class ModBinario {
 		} catch (Exception ex) {
 
 		}
+	}
+	
+	public static boolean comprobarDNI(String dni) {
+		boolean esta = false;
+		HashMap<String, ModProfesor> profesores = obtenerHashDeProfes();
+		if (!profesores.isEmpty()) {			
+			for (String a : profesores.keySet()) {
+				if (profesores.get(a).getDni().equals(dni)) {
+					esta = true;
+				}
+			}
+		}
+		profesores = null;
+		return esta;
 	}
 }
