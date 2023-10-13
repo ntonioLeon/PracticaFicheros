@@ -11,26 +11,26 @@ public class ContGestionAlumnos {
 
 	public static void alta() {
 
-		String dni = null, nombre = null, direc = null, telef = null;
+		String nombre = null, apellido = null, direc = null, telef = null;
 		LocalDate naz = null;
 
-		dni = ModValidador.validarDNI(1);
-		if (dni != null) {
-			nombre = ModValidador.validarNombre();
+		nombre = ModValidador.validarNombre();
+		if (nombre != null) {
+			apellido = ModValidador.validarApellido();
 		}
-		if (nombre != null && dni != null) {
+		if (apellido != null && nombre != null) {
 			direc = ModValidador.validarDireccion();
 		}
-		if (direc != null && nombre != null && dni != null) {
+		if (direc != null && apellido != null && nombre != null) {
 			telef = ModValidador.validarTeledono();
 		}
-		if (telef != null && direc != null && nombre != null && dni != null) {
+		if (telef != null && direc != null && apellido != null && nombre != null) {
 			naz = ModValidador.validarFechaNacimiento();
-			if (naz != null && telef != null && direc != null && nombre != null && dni != null) {
+			if (naz != null && telef != null && direc != null && apellido != null && nombre != null) {
 				// Se procede al alta
 
 				ArrayList<ModAlumno> nuevoAlumno = new ArrayList<>();
-				nuevoAlumno.add(new ModAlumno(dni, nombre, direc, telef, naz, new HashMap<String, ModCurso>()));
+				nuevoAlumno.add(new ModAlumno(nombre, apellido, direc, telef, naz, new HashMap<String, ModCurso>()));
 				ModSerializado.guardar(nuevoAlumno);
 			} else {
 				if (dni == null) {
