@@ -195,6 +195,11 @@ public class ContGestionProfesores {
 										profesores.get(dni).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
 										cursos.get(cod).setProfesor(profesores.get(dni));
 										System.out.println(profesores.get(dni).getNombre()+ " AHORA ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
+
+										ModBinario.reEscribirFichero(profesores);
+										ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+										profesores = ModBinario.obtenerHashDeProfes();
+										cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
 									} else {										
 										System.out.println(profesores.get(dni).getNombre()+ " YA NO SERA EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
 									}
@@ -212,10 +217,15 @@ public class ContGestionProfesores {
 							cod = ModValidador.validarCodigo();
 							if (cod != null) {
 								if (profesores.get(dni).getCursos().get(cod) != null) {
-									if (desRelacionar(profesores.get(dni), profesores.get(dni).getCursos().get(cod))) {
+									if (desRelacionar(profesores.get(dni).getNombre(), profesores.get(dni).getCursos().get(cod).getNombre())) {
 										profesores.get(dni).getCursos().remove(cod);										
 										cursos.get(cod).setProfesor(null);
 										System.out.println(profesores.get(dni).getNombre()+ " YA NO ES EL PROFESOR DE "+cursos.get(cod).getNombre());
+
+										ModBinario.reEscribirFichero(profesores);
+										ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+										profesores = ModBinario.obtenerHashDeProfes();
+										cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
 									} else {										
 										System.out.println(profesores.get(dni).getNombre()+ " SEGUIRA SIENDO ES EL PROFESOR DE "+profesores.get(dni).getCursos().get(cod).getNombre());
 									}
@@ -239,8 +249,6 @@ public class ContGestionProfesores {
 						System.out.println("INTRODUZCA SOLO OPCIONES VALIDAS");
 						break;
 					}
-					ModBinario.reEscribirFichero(profesores);
-					ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 				} while (!elec.equals("0"));
 			} else {
 				System.out.println(
@@ -305,10 +313,10 @@ public class ContGestionProfesores {
 		return false;
 	}
 	
-	private static boolean desRelacionar(ModProfesor prof, ModCurso curs) {
+	private static boolean desRelacionar(String persona, String curs) {
 		Scanner sc = new Scanner(System.in);
 		String elec = null;
-		System.out.println("SEGURO QUE QUIERE QUE "+prof.getNombre()+" DEJE DE IMPARTIR "+curs.getNombre());
+		System.out.println("SEGURO QUE QUIERE QUE "+persona+" DEJE DE IMPARTIR "+curs);
 		do {
 			System.out.println("PULSE 1 PARA SI, 2 PARA NO");
 			elec = sc.nextLine();
