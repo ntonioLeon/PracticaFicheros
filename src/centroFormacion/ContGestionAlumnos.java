@@ -58,6 +58,8 @@ public class ContGestionAlumnos {
 	}
 
 	public static void baja() {
+		boolean borrado = false; 
+		
 		System.out.println("MENU DE BAJA:");
 		System.out.println("EL SIGUIENTE NOMBRE VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA BORRAR");
 		String nom = ModValidador.validarNombre();
@@ -65,17 +67,20 @@ public class ContGestionAlumnos {
 		String ape = ModValidador.validarApellido();
 		if (nom != null || ape != null) {
 			ArrayList<ModAlumno> listaAlumnos = ModSerializado.cargar();
-			for (ModAlumno modAlumno : listaAlumnos) {
-				if (modAlumno.getNombre().equals(nom) &&modAlumno.getApellido().equals(ape)) {
-					if (siNo("borrar", "", modAlumno.getNombre(), "")) {
-					listaAlumnos.remove(modAlumno);
-					System.out.println("BAJA REALIZADA.");
-					ModSerializado.guardar(listaAlumnos);
+			for (int i = 0; i < listaAlumnos.size();i++) {
+				if (listaAlumnos.get(i).getNombre().equals(nom) && listaAlumnos.get(i).getApellido().equals(ape)) {
+					if (siNo("borrar", "", listaAlumnos.get(i).getNombre(), "")) {
+						listaAlumnos.remove(listaAlumnos.get(i));
+						borrado = true;
+						System.out.println("BAJA REALIZADA.");
+						ModSerializado.guardar(listaAlumnos);
 					}
 				}
 				
 			}
-
+			if (borrado) {
+				ModSerializado.guardar(listaAlumnos);
+			}
 		} else {
 			if (nom == null) {
 				System.out.println(
@@ -104,6 +109,106 @@ public class ContGestionAlumnos {
 		}
 	}
 
+	public static void modificar() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("MENU DE BUSQUEDA:");
+		System.out.println("EL SIGUIENTE NOMBRE VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA MODIFICAR");
+		String nom = ModValidador.validarNombre();
+		System.out.println("EL SIGUIENTE APELLIDO VALDRA PARA IDENTIFICAR AL ALUMNO QUE DESEA MODIFICAR");
+		String ape = ModValidador.validarApellido();
+		if (nom != null || ape != null) {
+			ArrayList<ModAlumno> listaAlumnos = ModSerializado.cargar();
+			for (int i = 0; i < listaAlumnos.size();i++) {
+				if (listaAlumnos.get(i).getNombre().equals(nom) && listaAlumnos.get(i).getApellido().equals(ape)) {
+					String elec = "";
+					while (!elec.equals("0")) {
+						System.out.println(
+								"INTRODUZCA 1 PARA MODIFICAR NOMBRE\n2 PARA MODIFICAR APELLIDO\n3 PARA MODIFICAR DIRECCION\n4 PARA MODIFICAR TELEFONO\n0 PARA SALIR");
+						elec = sc.nextLine();
+						switch (elec) {
+						case "1":
+							String NombreAux = ModValidador.validarNombre();
+							if (NombreAux != null) {
+								if (!repetido(NombreAux,listaAlumnos.get(i).getApellido())) {
+									if (siNo("Modificar", "NOMBRE", listaAlumnos.get(i).getNombre(), NombreAux)) {
+										listaAlumnos.get(i).setNombre(NombreAux);
+										System.out.println("MODIFICACION REALIZADA");
+									} else {
+										System.out.println("MODIFICACION CANCELADA");
+									}
+								} else {
+									System.out.println(
+											"NOMBRE Y APELLIDO INVALIDO YA QUE PERTENECE A OTRO ALUMNO YA EXITENTE");
+								}
+							} else {
+								System.out.println(
+										"NOMBRE INVALIDO POR DEMASIADOS VECES CONSECUTIVAS, VOLVIENDO A MENU DE MODIFICACION");
+							}
+							break;
+						case "2":
+							String ApellidoAux = ModValidador.validarApellido();
+							if (ApellidoAux != null) {
+								if (!repetido(listaAlumnos.get(i).getNombre(),ApellidoAux)) {
+									if (siNo("Modificar", "APELLIDO", listaAlumnos.get(i).getApellido(), ApellidoAux)) {
+										listaAlumnos.get(i).setApellido(ApellidoAux);
+										System.out.println("MODIFICACION REALIZADA");
+									} else {
+										System.out.println("MODIFICACION CANCELADA");
+									}
+								}
+								else {
+									System.out.println(
+											"NOMBRE Y APELLIDO INVALIDO YA QUE PERTENECE A OTRO ALUMNO YA EXITENTE");
+								}
+								
+							} else {
+								System.out.println(
+										"NOMBRE INVALIDO POR DEMASIADOS VECES CONSECUTIVAS, VOLVIENDO A MENU DE MODIFICACION");
+							}
+							break;
+						case "3":
+							String direc = ModValidador.validarDireccion();
+							if (direc != null) {
+								if (siNo("Modificar", "DIRECCION", listaAlumnos.get(i).getDireccion(), direc)) {
+									listaAlumnos.get(i).setDireccion(direc);
+									System.out.println("MODIFICACION REALIZADA");
+								} else {
+									System.out.println("MODIFICACION CANCELADA");
+								}
+							} else {
+								System.out.println(
+										"DIRECCION INVALIDA POR DEMASIADOS VECES CONSECUTIVAS, VOLVIENDO A MENU DE MODIFICACION");
+							}
+							break;
+						case "4":
+							String telef = ModValidador.validarTeledono();
+							if (telef != null) {
+								if (siNo("Modificar", "TELEFONO", listaAlumnos.get(i).getTelefono(), telef)) {
+									listaAlumnos.get(i).setTelefono(telef);
+									System.out.println("MODIFICACION REALIZADA");
+								} else {
+									System.out.println("MODIFICACION CANCELADA");
+								}
+							} else {
+								System.out.println(
+										"TELEFONO INVALIDO POR DEMASIADOS VECES CONSECUTIVAS, VOLVIENDO A MENU DE MODIFICACION");
+							}
+							break;
+						case "0":
+							// Para que no salte el default con la salida
+							break;
+						default:
+							System.out.println("INTRODUZCA SOLO OPCIONES VALIDAS");
+							break;
+						}
+						ModSerializado.guardar(listaAlumnos);
+					}
+						
+				}
+			}
+		}
+	}
+	
 	public static void mostrarTodosLosAlumnos() {
 		ArrayList<ModAlumno> listaAlumnos = ModSerializado.cargar();
 		for (ModAlumno modAlumno : listaAlumnos) {
