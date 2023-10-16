@@ -94,6 +94,16 @@ public class ModSerializado {
 		}
 	}
 	
+	public static ModAlumno obtenerUnAlumno(String Nombre,String Apellido){
+		ArrayList<ModAlumno> listaAlumno = ModSerializado.cargar();
+		for (ModAlumno modAlumno : listaAlumno) {
+			if(modAlumno.getNombre().equals(Nombre) && modAlumno.getApellido().equals(Apellido)) {
+				return modAlumno;
+			}
+		}
+		return null;
+	}
+	
 	public static void borrarDeCursoEnCascada(String cod) {
 		ArrayList<ModAlumno> alumnos = cargar();
 		if (!alumnos.isEmpty()) {
