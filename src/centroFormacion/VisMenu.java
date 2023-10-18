@@ -39,9 +39,6 @@ public class VisMenu {
 					case "5":
 
 						break;
-					case "6":
-
-						break;
 					case "0":
 
 						break;
@@ -62,22 +59,19 @@ public class VisMenu {
 					elecProfesores = sc.nextLine();
 					switch (elecProfesores) {
 					case "1":
-						ContGestionProfesores.alta();
+
 						break;
 					case "2":
-						ContGestionProfesores.baja();
+
 						break;
 					case "3":
-						ContGestionProfesores.modificar();
+
 						break;
 					case "4":
-						ContGestionProfesores.buscar();
+
 						break;
 					case "5":
-						ContGestionProfesores.mostrarTodosLosProfesores();
-						break;
-					case "6":
-						ContGestionProfesores.relacionarProfesoresConCursos();
+
 						break;
 					case "0":
 
@@ -99,22 +93,19 @@ public class VisMenu {
 					elecCursos = sc.nextLine();
 					switch (elecCursos) {
 					case "1":
-						ContGestionCursos.alta();
+
 						break;
 					case "2":
-						ContGestionCursos.baja();
+
 						break;
 					case "3":
-						ContGestionCursos.modificar();
+
 						break;
 					case "4":
-						ContGestionCursos.buscar();
+
 						break;
 					case "5":
-						ContGestionCursos.mostrarTodosLosProfesores();
-						break;
-					case "6":
-						
+
 						break;
 					case "0":
 

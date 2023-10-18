@@ -13,12 +13,7 @@ public class ModValidador {
 			String nombre = sc.nextLine();
 			if (!nombre.trim().isEmpty()) {
 				if (nombre.trim().length() < 26) {
-					if (!nombre.trim().contains(",") && !nombre.trim().contains(";")) {
-						System.out.println("NOMBRE VALIDO");
-						return nombre.trim(); // Si pasa las pruebas devuelve una String
-					} else {
-						System.out.println("EL CAMPO NOMBRE NO PUEDE CONTENER , NI ;");
-					}
+					return nombre.trim(); // Si pasa las pruebas devuelve una String
 				} else {
 					System.out.println("EL CAMPO NOMBRE NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -39,12 +34,7 @@ public class ModValidador {
 			String apellido = sc.nextLine();
 			if (!apellido.trim().isEmpty()) {
 				if (apellido.trim().length() < 26) {
-					if (!apellido.trim().contains(",") && !apellido.trim().contains(";")) {
-						System.out.println("APELLIDO VALIDO");
-						return apellido.trim(); // Si pasa las pruebas devuelve una String
-					} else {
-						System.out.println("EL CAMPO APELLIDO NO PUEDE CONTENER , NI ;");
-					}
+					return apellido.trim(); // Si pasa las pruebas devuelve una String
 				} else {
 					System.out.println("EL CAMPO APELLIDO NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -67,7 +57,6 @@ public class ModValidador {
 			if (!telefono.isEmpty()) {
 				if (telefono.length() == 9) {
 					if (isNumeric(telefono)) {
-						System.out.println("TELEFONO VALIDO");
 						return telefono;
 					} else {
 						System.out.println("EL CAMPO TELEFONO SOLO PUEDE CONTENER NUMEROS");
@@ -87,19 +76,14 @@ public class ModValidador {
 		return null;
 	}
 
-	public static String validarDireccion() { // Alumnos y Profesores
+	public static String validarDireccion() { // Alumnos
 		int cont = 0;
 		do {
-			System.out.println("INTRODUZCA DIRECCION");
+			System.out.println("INTRODUZCA APELLIDO");
 			String direc = sc.nextLine();
 			if (!direc.trim().isEmpty()) {
 				if (direc.trim().length() < 26) {
-					if (!direc.trim().contains(",") && !direc.trim().contains(";")) {
-						System.out.println("DIRECCION VALIDA");
-						return direc.trim(); // Si pasa las pruebas devuelve una String
-					} else {
-						System.out.println("EL CAMPO APELLIDO NO PUEDE CONTENER , NI ;");
-					}
+					return direc.trim(); // Si pasa las pruebas devuelve una String
 				} else {
 					System.out.println("EL CAMPO DIRECCION NO PUEDE SUPERAR LOS 25 CARACTERES");
 					cont++;
@@ -113,7 +97,7 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static LocalDate validarFechaNacimiento() { // Alumnos
+	public static LocalDate validarFechaNacimiento() {
 		int cont = 0;
 		boolean fin = false;
 		int d = -1;
@@ -193,7 +177,6 @@ public class ModValidador {
 						if (Integer.parseInt(anno) > 1949 && Integer.parseInt(anno) < 2010) {
 							y = Integer.parseInt(anno);
 							LocalDate fecha = LocalDate.of(y, m, d);
-							System.out.println("FECHA DE NACIMIENTO VALIDA");
 							return fecha;
 						} else {
 							System.out.println("EL CAMPO ANNO SOLO PUEDE CONTENER NUMEROS DEL 1950 AL 2010");
@@ -219,14 +202,13 @@ public class ModValidador {
 		return null;
 	}
 
-	public static String validarDescripcion() { // Cursos
+	public static String validarDescripcion() { // Alumnos
 		int cont = 0;
 		do {
 			System.out.println("INTRODUZCA DESCRIPCION");
 			String descipcion = sc.nextLine();
 			if (!descipcion.trim().isEmpty()) {
 				if (descipcion.trim().length() < 51) {
-					System.out.println("DESCRIPCION VALIDA");
 					return descipcion.trim(); // Si pasa las pruebas devuelve una String
 				} else {
 					System.out.println("EL CAMPO DESCRIPCION NO PUEDE SUPERAR LOS 50 CARACTERES");
@@ -241,114 +223,36 @@ public class ModValidador {
 		return null; // Si falla cinco veces devuelve null
 	}
 
-	public static String validarDNI(int i) { // Profesores
-		int cont = 0;
-		switch (i) {
-		case 1:
-			do {
-				System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
-				String dni = sc.nextLine();
-				dni = dni.trim();
-				if (!dni.isEmpty()) {
-					if (dni.length() == 9) {
-						if (isNumeric(dni.substring(0, 7))) {
-							if (isAlfabetic(dni.substring(8))) {
-								if (!ModBinario.comprobarDNI(dni)) { //Alta, queremos que no este
-								System.out.println("DNI VALIDO");
-								return dni;
-								} else {
-									System.out.println(
-											"YA EXISTE UN PROFESOR CON EL DNI ");
-									cont++;
-								}
-							} else {
-								System.out.println(
-										"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-								cont++;
-							}
-						} else {
-							System.out.println(
-									"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-							cont++;
-						}
-					} else {
-						System.out.println(
-								"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-						cont++;
-					}
-				} else {
-					System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
-					cont++;
-				}
-				System.out.println("FALLOS = " + cont);
-			} while (cont < 5);
-			break;
-		case 2:
-			do {
-				System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
-				String dni = sc.nextLine();
-				dni = dni.trim();
-				if (!dni.isEmpty()) {
-					if (dni.length() == 9) {
-						if (isNumeric(dni.substring(0, 7))) {
-							if (isAlfabetic(dni.substring(8))) { 
-								System.out.println("DNI VALIDO"); //Aqui, queremos que coicida, por lo que dejamos pasar un posibl dni repetido pues sera necesario para encontrar profespres
-								return dni;
-							} else {
-								System.out.println(
-										"FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-								cont++;
-							}
-						} else {
-							System.out.println(
-									"FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-							cont++;
-						}
-					} else {
-						System.out.println(
-								"EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
-						cont++;
-					}
-				} else {
-					System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
-					cont++;
-				}
-				System.out.println("FALLOS = " + cont);
-			} while (cont < 5);
-			break;
-		default:
-			break;
-		}
-		return null; // Si falla cinco veces devuelve null
-	}
-
-	public static String validarCodigo() { // Cursos
+	public static String validarDNI() { // Alumnos
 		int cont = 0;
 		do {
-			System.out
-					.println("INTRODUZCA EL CODIGO DEL CURSO, ESTE DEBERA EMPEZAR POR 'AE' E IR SEGUIDO DE UN NUMERO");
-			String cod = sc.nextLine();
-			cod = cod.trim();
-			if (!cod.isEmpty()) {
-				System.out.println(cod.substring(0, 2));
-				if (cod.substring(0, 2).equals("AE")) {
-					if (isNumeric(cod.substring(3))) {
-						System.out.println("CODIGO VALIDO");
-						return cod;
+			System.out.println("INTRODUZCA DNI, ESTE CAMPO SE COMPONE DE 8 DIGITOS Y 1 LETRA AL FINAL");
+			String dni = sc.nextLine();
+			dni = dni.trim();
+			if (!dni.isEmpty()) {
+				if (dni.length() == 9) {
+					if (isNumeric(dni.substring(0, 7))) {
+						if (isAlfabetic(dni.substring(8))) {
+							return dni;
+						} else {
+							System.out.println("FALLO EN LETRA: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+							cont++;
+						}
 					} else {
-						System.out.println("EL CODIGO DEBE SER NUMERICO A PARTIR DE SU TERCER DIGITO");
+						System.out.println("FALLO EN NUMERO: EL CAMPO DEBE TENER LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
+						cont++;
 					}
-				} else {
-					System.out.println("EL CODIGO DEBE EMPEZAR POR 'AE'");
+				}else {
+					System.out.println("EL CAMPO DNI DEBE TENER 9 CARACTERES, LOS 8 PRIMEROS NUMERICOS Y EL ULTIMO ALFABETICO");
 					cont++;
 				}
 			} else {
 				System.out.println("NO INTRODUZCA NI CADENAS VACIAS NI UNICAMENTE ESPACIOS");
 				cont++;
-			}
+			}			
 			System.out.println("FALLOS = " + cont);
 		} while (cont < 5);
-		return null;
+		return null; // Si falla cinco veces devuelve null
 	}
 
 	private static boolean isNumeric(String cadena) { // comprueba que la cadena sea numerica

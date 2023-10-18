@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ModAlumno implements Serializable{ //Serializado
+public class ModAlumno implements Serializable{
 	private static int cont = 0;;
 	private String numExpediente;
 	private String nombre;
