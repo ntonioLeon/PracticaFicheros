@@ -1,14 +1,10 @@
 package centroFormacion;
-
 import java.util.Scanner;
-
 public class VisMenu {
-
 	public static void main(String[] args) {
 		System.out.println("Inicio de PracticaADFIcheros");
 		Scanner sc = new Scanner(System.in);
 		String eleccion = null, elecAlumnos = null, elecProfesores = null, elecCursos = null;
-
 		do {
 			System.out.println(
 					"SELECCIONE 1 PARA GESTIONAR ALUMNOS, 2 PARA GESTIONAR PROFESORES, 3 PARA GESTIONAR CURSOS, 0 PARA SALIR DE LA APLICACION.");
@@ -25,62 +21,46 @@ public class VisMenu {
 					elecAlumnos = sc.nextLine();
 					switch (elecAlumnos) {
 					case "1":
-
 						break;
 					case "2":
-
 						break;
 					case "3":
-
 						break;
 					case "4":
-
 						break;
 					case "5":
-
+						break;
+					case "6":
 						break;
 					case "0":
-
-						break;
-					default:
-						System.out.println("ELECCION NO VALIDA.");
-						break;
-					}
-				} while (!elecAlumnos.equals("0"));
-				break;
-			case "2":
-				do {
-					System.out.println("GESTION PROFESORES");
-					System.out.println("SELECCIONE 1 PARA DAR DE ALTA UN PROFESOR\n"
-							+ "2 PARA DAR DE BAJA UN PROFESOR\n" + "3 PARA MODIFICAR UN PROFESOR\n"
-							+ "4 PARA BUSCAR UN PROFESOR\n" + "5 PARA MOSTRAR TODOS LOS PROFESORES\n"
-							+ "6 PARA ADMINISTRAR LA RELACION ENTRE PROFESORES Y LOS CURSOS\n"
-							+ "0 VOLVER AL MENU PRINCIPAL.");
 					elecProfesores = sc.nextLine();
 					switch (elecProfesores) {
 					case "1":
-
+						ContGestionProfesores.alta();
 						break;
 					case "2":
-
+						ContGestionProfesores.baja();
 						break;
 					case "3":
-
+						ContGestionProfesores.modificar();
 						break;
 					case "4":
-
+						ContGestionProfesores.buscar();
 						break;
 					case "5":
-
+						ContGestionProfesores.mostrarTodosLosProfesores();
+						break;
+					case "6":
+						ContGestionProfesores.relacionarProfesoresConCursos();
 						break;
 					case "0":
-
 						break;
 					default:
 						System.out.println("ELECCION NO VALIDA.");
 						break;
 					}
-				} while (!elecProfesores.equals("0"));
+					}
+					} while (!elecProfesores.equals("0"));
 				break;
 			case "3":
 				do {
@@ -93,22 +73,24 @@ public class VisMenu {
 					elecCursos = sc.nextLine();
 					switch (elecCursos) {
 					case "1":
-
+						ContGestionCursos.alta();
 						break;
 					case "2":
-
+						ContGestionCursos.baja();
 						break;
 					case "3":
-
+						ContGestionCursos.modificar();
 						break;
 					case "4":
-
+						ContGestionCursos.buscar();
 						break;
 					case "5":
-
+						ContGestionCursos.mostrarTodosLosProfesores();
+						break;
+					case "6":
+						
 						break;
 					case "0":
-
 						break;
 					default:
 						System.out.println("ELECCION NO VALIDA.");
@@ -124,7 +106,6 @@ public class VisMenu {
 				break;
 			}
 		} while (!eleccion.equals("0"));
-
 		sc.close();
 		System.out.println("Fin de PracticaADFIcheros");
 	}
