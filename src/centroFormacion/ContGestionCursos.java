@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class ContGestionCursos {
-
 	public static void alta() {
 		String nomb = null, descrip = null;
 		nomb = ModValidador.validarNombre();
@@ -184,26 +183,29 @@ public class ContGestionCursos {
 							if (relacionar(profesores.get(dni).getNombre(), cursos.get(cod).getNombre())) {
 								profesores.get(dni).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
 								cursos.get(cod).setProfesor(profesores.get(dni));
-								System.out.println(
-										profesores.get(dni).getNombre()+" ES EL PROFESOR DE "+cursos.get(cod).getNombre());
+								System.out.println(profesores.get(dni).getNombre() + " ES EL PROFESOR DE "
+										+ cursos.get(cod).getNombre());
 							} else {
 								System.out.println("ASIGNACION CANCELADA.");
 							}
 						}
 						if (cursos.get(cod).getProfesor() != null
-								&& !dni.equals(cursos.get(cod).getProfesor().getDni())) { // Tiene profesor y es diferente al introducido
-							System.out.println("EL CURSO "+cursos.get(cod)+" YA POSEE UN PROFESOR; "+cursos.get(cod).getProfesor().getNombre()+", SABIENDO ESTO");
+								&& !dni.equals(cursos.get(cod).getProfesor().getDni())) { // Tiene profesor y es
+																							// diferente al introducido
+							System.out.println("EL CURSO " + cursos.get(cod) + " YA POSEE UN PROFESOR; "
+									+ cursos.get(cod).getProfesor().getNombre() + ", SABIENDO ESTO");
 							if (relacionar(profesores.get(dni).getNombre(), cursos.get(cod).getNombre())) {
 								profesores.get(dni).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
 								cursos.get(cod).setProfesor(profesores.get(dni));
-								System.out.println(
-										"AHORA "+profesores.get(dni).getNombre()+" ES EL NUEVO PROFESOR DE "+cursos.get(cod).getNombre());
+								System.out.println("AHORA " + profesores.get(dni).getNombre()
+										+ " ES EL NUEVO PROFESOR DE " + cursos.get(cod).getNombre());
 							} else {
 								System.out.println("ASIGNACION CANCELADA.");
 							}
 						}
 						if (cursos.get(cod).getProfesor() != null
-								&& dni.equals(cursos.get(cod).getProfesor().getDni())) { // Tiene profesor y es el mismo al introducido
+								&& dni.equals(cursos.get(cod).getProfesor().getDni())) { // Tiene profesor y es el mismo
+																							// al introducido
 							System.out.println(
 									"RELACION SUSPENDIDA DEBIDO A QUE EL DNI INTRODUCIDO CORRESPONDE AL DEL ACTUAL PROFESOR DEL CURSO");
 						}
@@ -219,11 +221,14 @@ public class ContGestionCursos {
 				case "2":
 					if (cursos.get(cod).getProfesor() != null) {
 						if (desRelacionar(cursos.get(cod).getProfesor().getNombre(), cursos.get(cod).getNombre())) {
-							profesores.get(cursos.get(cod).getProfesor().getDni()).getCursos().remove(cod); // Quitar el curso de la lista del profesor.
+							profesores.get(cursos.get(cod).getProfesor().getDni()).getCursos().remove(cod); // Quitar el
+																											// curso de
+																											// la lista
+																											// del
+																											// profesor.
 							cursos.get(cod).setProfesor(null); // quitar el profesor del curso.
 							System.out.println("DESASIGNACION REALIZADA CON EXITO " + cursos.get(cod).getNombre()
 									+ ", YA NO TIENE PROFEOSR");
-
 							ModBinario.reEscribirFichero(profesores); // Reset de listas.
 							ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 							cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
@@ -253,73 +258,78 @@ public class ContGestionCursos {
 		ArrayList<ModAlumno> alumnosList = ModSerializado.cargar();
 		HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
 		HashMap<String, ModAlumno> alumnos = ModSerializado.toHashMap(alumnosList);
+		HashMap<String, ModAlumno> listTemp = new HashMap<>();
 		Scanner sc = new Scanner(System.in);
 		String selec = "";
+		String Nombre = "";
+		String Apellido = "";
 		String NomCom = "";
-		if(!alumnos.isEmpty()) {
-		do {
+		
+		System.out.println(
+				"PULSE 1 PARA ASIGNAR UN ALUMNO AL CURSO\n PULSE 2 RETIRAR EL ALUMNO DE ESTE CURSO\n PULSE 0 PARA SALIR");
+		selec = sc.nextLine();
+		switch (selec) {
+		case "1":
 			System.out.println(
-					"PULSE 1 PARA MATRICULAR UN ALUMNO AL CURSO\n PULSE 2 DESMATRIUCLAR UN ALUMNO DE ESTE CURSO\n PULSE 0 PARA SALIR");
-			selec = sc.nextLine();
-			switch (selec) {
-			case "1":
-				System.out.println(
-						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
-				String nombre = ModValidador.validarNombre();
-				System.out.println(
-						"INTRODUZCA EL APELLIDO DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
-				String apellido = ModValidador.validarApellido();	
-				NomCom = nombre+"_"+apellido;
-				
-				if (alumnos.get(NomCom) != null) { // Si el nombre y apellido esta bien.
-					if (cursos.get(cod).getProfesor() == null) { // No tiene alumnos
-						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
-							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
-							cursos.get(cod).setAlumnos(alumnos);
-							System.out.println(
-									alumnos.get(NomCom).getNombre()+" ES EL ALUMNO DE "+cursos.get(cod).getNombre());
-						} else {
-							System.out.println("ASIGNACION CANCELADA.");
-						}
+					"INTRODUZCA EL DNI DEL PROFESOR QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
+			Nombre = ModValidador.validarNombre();
+			Apellido = ModValidador.validarApellido();
+			NomCom = Nombre+"_"+Apellido;
+			if (alumnos.get(NomCom) != null) { // Si el dni esta bien.
+				if (cursos.get(cod).getProfesor() == null) { // No tiene profesor
+					if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
+						listTemp.put(NomCom, alumnos.get(NomCom));
+						alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
+						cursos.get(cod).setAlumnos(listTemp);
+						System.out.println(alumnos.get(NomCom).getNombre() + " ES EL PROFESOR DE "
+								+ cursos.get(cod).getNombre());
+					} else {
+						System.out.println("ASIGNACION CANCELADA.");
 					}
-					if (!nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && !apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene profesor y es diferente al introducido
-						System.out.println("EL CURSO "+cursos.get(cod)+" YA TIENE A ESTE ALUMNO INSCRITO; "+cursos.get(cod).getProfesor().getNombre()+", SABIENDO ESTO");
-						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
-							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
-							cursos.get(cod).setAlumnos(new HashMap<>());
-							System.out.println(
-									"AHORA "+alumnos.get(NomCom).getNombre()+" ESTA INSCRITO EN EL CUSRO DE "+cursos.get(cod).getNombre());
-						} else {
-							System.out.println("ASIGNACION CANCELADA.");
-						}
-					}
-					if (cursos.get(cod).getAlumnos() != null
-							&& nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene alumnos y es el mismo al introducido
-						System.out.println(
-								"RELACION SUSPENDIDA DEBIDO A QUE EL NOMBRE COMPLETO INTRODUCIDO CORRESPONDE AL DEL ACTUAL ALUMNO INSCRITO EN EL CURSO");
-					}
-				} else {
-					System.out.println(
-							"RELACION SUSPENDIDA DEBIDO A QUE EL DNI INTRODUCIDO NO CORRESPONDE AL DE NINGUN PROFESOR EXISTENTE");
 				}
-				ModSerializado.reEscribir(alumnos); // Reset de listas.
-				ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
-				cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
-				alumnosList = ModSerializado.cargar();
-				alumnos = ModSerializado.toHashMap(alumnosList);
-				break;
-			case "2":
-
-				break;
-			case "0":
-
-				break;
-			default:
-				System.out.println("OPCION NO VALIDA");
-				break;
+				if (Nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && Apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene profesor y es el mismo
+																					// al introducido
+					System.out.println(
+							"RELACION SUSPENDIDA DEBIDO A QUE EL NOMBRE Y APELLIDO INTRODUCIDO CORRESPONDE AL DEL ACTUAL ALUMNO DEL CURSO");
+				}
+			} else {
+				System.out.println(
+						"RELACION SUSPENDIDA DEBIDO A QUE EL NOMBRE Y APELLIDO INTRODUCIDO NO CORRESPONDE AL DE NINGUN ALUMNO EXISTENTE");
 			}
-		} while (!selec.equals("0"));
-	}
+			ModSerializado.reEscribir(alumnos);; // Reset de listas.
+			ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+			cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+			alumnos = ModSerializado.toHashMap(alumnosList);
+			break;
+		case "2":
+			if (cursos.get(cod).getAlumnos().get(NomCom) != null) {
+				if (desRelacionar(cursos.get(cod).getProfesor().getNombre(), cursos.get(cod).getNombre())) {
+					alumnos.get(cursos.get(cod).getAlumnos().get(NomCom)).getCursos().remove(cod); // Quitar el
+																									// curso de
+																									// la lista
+																									// del
+					listTemp.remove(NomCom);														// Alumno.
+					cursos.get(cod).setAlumnos(listTemp); // quitar el profesor del curso.
+					System.out.println("DESASIGNACION REALIZADA CON EXITO " + cursos.get(cod).getNombre()
+							+ ", NO TIENE AL ALUMNO");
+					ModSerializado.reEscribir(alumnos);; // Reset de listas. 
+					ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+					cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+					alumnos = ModSerializado.toHashMap(alumnosList);
+				} else {
+					System.out.println("DESASIGNACION CANCELADA.");
+				}
+			} else {
+				System.out.println(
+						"NO SE PUEDE DESASIGNAR EL PROFESOR DE ESTE CURSO YA QUE NO DISPONE DE NINGUNO");
+			}
+			break;
+		case "0":
+			break;
+		default:
+			System.out.println("OPCION NO VALIDA");
+			break;
+		}
 		}
 
 	private static boolean relacionar(String prof, String curs) {
