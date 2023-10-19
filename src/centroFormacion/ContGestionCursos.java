@@ -250,10 +250,12 @@ public class ContGestionCursos {
 	}
 
 	private static void relacionarCursosYAlumno(String cod) {
-		ArrayList<ModAlumno> alumnos = ModSerializado.cargar();
+		ArrayList<ModAlumno> alumnosList = ModSerializado.cargar();
 		HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+		HashMap<String, ModAlumno> alumnos = ModSerializado.toHashMap(alumnosList);
 		Scanner sc = new Scanner(System.in);
 		String selec = "";
+		String NomCom = "";
 		if(!alumnos.isEmpty()) {
 		do {
 			System.out.println(
@@ -265,36 +267,36 @@ public class ContGestionCursos {
 						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
 				String nombre = ModValidador.validarNombre();
 				System.out.println(
-						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
+						"INTRODUZCA EL APELLIDO DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
 				String apellido = ModValidador.validarApellido();	
+				NomCom = nombre+"_"+apellido;
 				
-				int indice = ModSerializado.obtenerIndice(nombre, apellido);
-				if (alumnos.get(indice) != null) { // Si el nombre y apellido esta bien.
+				if (alumnos.get(NomCom) != null) { // Si el nombre y apellido esta bien.
 					if (cursos.get(cod).getProfesor() == null) { // No tiene alumnos
-						if (relacionar(alumnos.get(indice).getNombre(), cursos.get(cod).getNombre())) {
-							alumnos.get(indice).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
-							cursos.get(cod).setAlumnos(alumnos.get(indice));
+						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
+							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
+							cursos.get(cod).setAlumnos(alumnos);
 							System.out.println(
-									alumnos.get(indice).getNombre()+" ES EL ALUMNO DE "+cursos.get(cod).getNombre());
+									alumnos.get(NomCom).getNombre()+" ES EL ALUMNO DE "+cursos.get(cod).getNombre());
 						} else {
 							System.out.println("ASIGNACION CANCELADA.");
 						}
 					}
-					if (nombre.equals(cursos.get(cod).getAlumnos().get(nombre+"_"+apellido).getNombre() && apellido.equals(cursos.get(cod).getAlumnos().get(nombre+"_"+apellido).getApellido())) { // Tiene profesor y es diferente al introducido
-						System.out.println("EL CURSO "+cursos.get(cod)+" YA POSEE UN PROFESOR; "+cursos.get(cod).getProfesor().getNombre()+", SABIENDO ESTO");
-						if (relacionar(alumnos.get(indice).getNombre(), cursos.get(cod).getNombre())) {
-							profesores.get(dni).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
+					if (!nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && !apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene profesor y es diferente al introducido
+						System.out.println("EL CURSO "+cursos.get(cod)+" YA TIENE A ESTE ALUMNO INSCRITO; "+cursos.get(cod).getProfesor().getNombre()+", SABIENDO ESTO");
+						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
+							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
 							cursos.get(cod).setAlumnos(new HashMap<>());
 							System.out.println(
-									"AHORA "+alumnos.get(indice).getNombre()+" ESTA INSCRITO EN EL CUSRO DE "+cursos.get(cod).getNombre());
+									"AHORA "+alumnos.get(NomCom).getNombre()+" ESTA INSCRITO EN EL CUSRO DE "+cursos.get(cod).getNombre());
 						} else {
 							System.out.println("ASIGNACION CANCELADA.");
 						}
 					}
-					if (cursos.get(cod).getProfesor() != null
-							&& dni.equals(cursos.get(cod).getProfesor().getDni())) { // Tiene profesor y es el mismo al introducido
+					if (cursos.get(cod).getAlumnos() != null
+							&& nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene alumnos y es el mismo al introducido
 						System.out.println(
-								"RELACION SUSPENDIDA DEBIDO A QUE EL DNI INTRODUCIDO CORRESPONDE AL DEL ACTUAL PROFESOR DEL CURSO");
+								"RELACION SUSPENDIDA DEBIDO A QUE EL NOMBRE COMPLETO INTRODUCIDO CORRESPONDE AL DEL ACTUAL ALUMNO INSCRITO EN EL CURSO");
 					}
 				} else {
 					System.out.println(
@@ -303,7 +305,8 @@ public class ContGestionCursos {
 				ModSerializado.reEscribir(alumnos); // Reset de listas.
 				ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 				cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
-				profesores = ModBinario.obtenerHashDeProfes();
+				alumnosList = ModSerializado.cargar();
+				alumnos = ModSerializado.toHashMap(alumnosList);
 				break;
 			case "2":
 

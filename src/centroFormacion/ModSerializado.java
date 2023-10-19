@@ -10,6 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ModSerializado {
 	
@@ -104,6 +106,32 @@ public class ModSerializado {
 		return null;
 	}
 	
+	public static void reEscribir(HashMap <String,ModAlumno> alumnos) {
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		ObjectOutputStream oos = null;
+		
+		try {
+			fos = new FileOutputStream(FILENAME);
+			bos = new BufferedOutputStream(fos);
+			oos = new ObjectOutputStream(bos);
+			
+			for (Entry<String, ModAlumno> entry : alumnos.entrySet()) {				
+				oos.writeObject(entry.getValue());
+				oos.flush();
+				oos.reset();
+				
+			}
+			
+			oos.close();
+			bos.close();
+			fos.close();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void borrarDeCursoEnCascada(String cod) {
 		ArrayList<ModAlumno> alumnos = cargar();
 		if (!alumnos.isEmpty()) {
@@ -114,6 +142,15 @@ public class ModSerializado {
 			}			
 			guardar(alumnos);
 		}
+	}
+	
+	public static HashMap<String, ModAlumno> toHashMap(ArrayList<ModAlumno> lista){
+		HashMap<String, ModAlumno> listaMapa = new HashMap<>();
+		for (int i = 0; i < lista.size(); i++) {
+			String nomCom = lista.get(i).getNombre()+"_"+lista.get(i).getApellido();
+			listaMapa.put(nomCom, lista.get(i));
+		}
+		return listaMapa;
 	}
 	
 	public static HashMap<String, ModAlumno> obtenerAlumnosPorNomYApe(String cadena) {
