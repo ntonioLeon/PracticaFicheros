@@ -260,6 +260,106 @@ public class ContGestionAlumnos {
 		}
 		return false;
 	}
+	
+	public static void relacionarCursosYAlumno(String cod) {
+		ArrayList<ModAlumno> alumnosList = ModSerializado.cargar();
+		HashMap<String, ModCurso> cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+		HashMap<String, ModAlumno> alumnos = ModSerializado.toHashMap(alumnosList);
+		Scanner sc = new Scanner(System.in);
+		String selec = "";
+		String NomCom = "";
+		if(!alumnos.isEmpty()) {
+		do {
+			System.out.println(
+					"PULSE 1 PARA MATRICULAR UN ALUMNO AL CURSO\n PULSE 2 DESMATRIUCLAR UN ALUMNO DE ESTE CURSO\n PULSE 0 PARA SALIR");
+			selec = sc.nextLine();
+			switch (selec) {
+			case "1":
+				System.out.println(
+						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
+				String nombre = ModValidador.validarNombre();
+				System.out.println(
+						"INTRODUZCA EL APELLIDO DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
+				String apellido = ModValidador.validarApellido();	
+				NomCom = nombre+"_"+apellido;
+				
+				if (alumnos.get(NomCom) != null) { // Si el nombre y apellido esta bien.
+					if (cursos.get(cod).getAlumnos() == null) { // No tiene alumnos
+						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
+							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
+							cursos.get(cod).setAlumnos(alumnos);
+							System.out.println(
+									alumnos.get(NomCom).getNombre()+" ES EL ALUMNO DE "+cursos.get(cod).getNombre());
+						} else {
+							System.out.println("ASIGNACION CANCELADA.");
+						}
+					}
+					if (!nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && !apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene profesor y es diferente al introducido
+						System.out.println("EL CURSO "+cursos.get(cod)+" YA TIENE A ESTE ALUMNO INSCRITO; "+cursos.get(cod).getProfesor().getNombre()+", SABIENDO ESTO");
+						if (relacionar(alumnos.get(NomCom).getNombre(), cursos.get(cod).getNombre())) {
+							alumnos.get(NomCom).getCursos().put(cursos.get(cod).getCodigo(), cursos.get(cod));
+							cursos.get(cod).setAlumnos(new HashMap<>());
+							System.out.println(
+									"AHORA "+alumnos.get(NomCom).getNombre()+" ESTA INSCRITO EN EL CUSRO DE "+cursos.get(cod).getNombre());
+						} else {
+							System.out.println("ASIGNACION CANCELADA.");
+						}
+					}
+					if (cursos.get(cod).getAlumnos() != null
+							&& nombre.equals(cursos.get(cod).getAlumnos().get(NomCom).getNombre()) && apellido.equals(cursos.get(cod).getAlumnos().get(NomCom).getApellido())) { // Tiene alumnos y es el mismo al introducido
+						System.out.println(
+								"RELACION SUSPENDIDA DEBIDO A QUE EL NOMBRE COMPLETO INTRODUCIDO CORRESPONDE AL DEL ACTUAL ALUMNO INSCRITO EN EL CURSO");
+					}
+				} else {
+					System.out.println(
+							"RELACION SUSPENDIDA DEBIDO A QUE EL DNI INTRODUCIDO NO CORRESPONDE AL DE NINGUN PROFESOR EXISTENTE");
+				}
+				ModSerializado.reEscribir(alumnos); // Reset de listas.
+				ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+				cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+				alumnosList = ModSerializado.cargar();
+				alumnos = ModSerializado.toHashMap(alumnosList);
+				break;
+			case "2":
+				if (!alumnos.get(NomCom).getCursos().isEmpty()) {
+					cod = ModValidador.validarCodigo();
+					if (cod != null) {
+						if (alumnos.get(NomCom).getCursos().get(cod) != null) {
+							if (desRelacionar(alumnos.get(NomCom).getNombre(), alumnos.get(NomCom).getCursos().get(cod).getNombre())) {
+								alumnos.get(NomCom).getCursos().remove(cod);										
+								cursos.get(cod).setProfesor(null);
+								System.out.println(alumnos.get(NomCom).getNombre()+ " YA NO ES EL PROFESOR DE "+cursos.get(cod).getNombre());
+
+								ModSerializado.reEscribir(alumnos);
+								ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
+								listaAlumnos = ModSerializado.cargar();
+								cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+							} else {										
+								System.out.println(alumnos.get(NomCom).getNombre()+ " SEGUIRA CURSANDO EM "+alumnos.get(NomCom).getCursos().get(cod).getNombre());
+							}
+						} else {
+							System.out.println(
+									"LA RELACION NO SE PUDO REALIZAR DEBIDO A QUE EL CODIGO INTRODUCIDO NO SE CORRESPONDE CON EL DE NINGUN CURSO IMPARTIDO POR EL DOCENTE");
+						}
+					} else {
+						System.out.println(
+								"LA RELACION NO SE PUDO REALIZAR DEBIDO A QUE SE FALLARON 5 VECES CONSECUTIVAS EN EL CAMPO: CODIGO");
+					}
+				} else {
+					System.out
+							.println("NO SE PUEDE ELIMINAR UN CURSO DE UN PROFESOR SI ESTE NO IMPARTE NINGUNO");
+				}
+				break;
+			case "0":
+				// Nada
+				break;
+			default:
+				System.out.println("OPCION NO VALIDA");
+				break;
+			}
+		} while (!selec.equals("0"));
+	}
+		}
 
 	private static boolean relacionar(String alum, String curs) {
 		Scanner sc = new Scanner(System.in);
