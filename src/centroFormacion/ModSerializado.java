@@ -106,17 +106,20 @@ public class ModSerializado {
 		return null;
 	}
 	
-	public static void reEscribir(HashMap <String,ModAlumno> alumnos) {
+	public static ArrayList<ModAlumno> reEscribir(HashMap <String,ModAlumno> alumnos) {
 		FileOutputStream fos = null;
 		BufferedOutputStream bos = null;
 		ObjectOutputStream oos = null;
+		
+		ArrayList<ModAlumno> lista = new ArrayList<>();
 		
 		try {
 			fos = new FileOutputStream(FILENAME);
 			bos = new BufferedOutputStream(fos);
 			oos = new ObjectOutputStream(bos);
 			
-			for (Entry<String, ModAlumno> entry : alumnos.entrySet()) {				
+			for (Entry<String, ModAlumno> entry : alumnos.entrySet()) {
+				lista.add(entry.getValue());
 				oos.writeObject(entry.getValue());
 				oos.flush();
 				oos.reset();
@@ -130,6 +133,8 @@ public class ModSerializado {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		return lista;
 	}
 	
 	public static void borrarDeCursoEnCascada(String cod) {

@@ -312,7 +312,8 @@ public class ContGestionCursos {
 					cursos.get(cod).setAlumnos(listTemp); // quitar el profesor del curso.
 					System.out.println("DESASIGNACION REALIZADA CON EXITO " + cursos.get(cod).getNombre()
 							+ ", NO TIENE AL ALUMNO");
-					ModSerializado.reEscribir(alumnos);; // Reset de listas. 
+					
+					alumnosList = ModSerializado.reEscribir(alumnos); // Reset de listas.
 					ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 					cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
 					alumnos = ModSerializado.toHashMap(alumnosList);
@@ -400,5 +401,10 @@ public class ContGestionCursos {
 			} while (!elec.equals("1") || !elec.equals("2"));
 		}
 		return false;
+	}
+
+	public static void mostrarTodosLosAlumnos() {
+		// TODO Auto-generated method stub
+		
 	}
 }

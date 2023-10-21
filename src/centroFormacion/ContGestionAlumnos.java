@@ -314,10 +314,9 @@ public class ContGestionAlumnos {
 					System.out.println(
 							"RELACION SUSPENDIDA DEBIDO A QUE EL DNI INTRODUCIDO NO CORRESPONDE AL DE NINGUN PROFESOR EXISTENTE");
 				}
-				ModSerializado.reEscribir(alumnos); // Reset de listas.
+				alumnosList = ModSerializado.reEscribir(alumnos); // Reset de listas.
 				ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
 				cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
-				alumnosList = ModSerializado.cargar();
 				alumnos = ModSerializado.toHashMap(alumnosList);
 				break;
 			case "2":
@@ -330,10 +329,10 @@ public class ContGestionAlumnos {
 								cursos.get(cod).setProfesor(null);
 								System.out.println(alumnos.get(NomCom).getNombre()+ " YA NO ES EL PROFESOR DE "+cursos.get(cod).getNombre());
 
-								ModSerializado.reEscribir(alumnos);
+								alumnosList = ModSerializado.reEscribir(alumnos); // Reset de listas.
 								ModFicherosDeTexto.reEscribirTrasBajaOMod(cursos);
-								listaAlumnos = ModSerializado.cargar();
 								cursos = ModFicherosDeTexto.obtenerTodosLosCursos();
+								alumnos = ModSerializado.toHashMap(alumnosList);
 							} else {										
 								System.out.println(alumnos.get(NomCom).getNombre()+ " SEGUIRA CURSANDO EM "+alumnos.get(NomCom).getCursos().get(cod).getNombre());
 							}
