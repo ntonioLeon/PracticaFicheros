@@ -36,9 +36,16 @@ public class VisMenu {
 						ContGestionAlumnos.mostrarTodosLosAlumnos();
 						break;
 					case "6":
-						ContGestionAlumnos.relacionarCursosYAlumno(elecCursos);
+						ContGestionAlumnos.relacionarCursosYAlumno();
 						break;
 					case "0":
+						break;
+					default:
+						System.out.println("ELECCION NO VALIDA.");
+						break;
+						}} while (!elecAlumnos.equals("0"));
+						break;
+					case "2":
 					elecProfesores = sc.nextLine();
 					switch (elecProfesores) {
 					case "1":
@@ -66,7 +73,7 @@ public class VisMenu {
 						break;
 					}
 					}
-					} while (!elecProfesores.equals("0"));
+					} while (!elecProfesores.equals("0") || !elecAlumnos.equals("0"));
 				break;
 			case "3":
 				do {

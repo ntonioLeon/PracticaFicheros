@@ -276,7 +276,7 @@ public class ContGestionAlumnos {
 			switch (selec) {
 			case "1":
 				System.out.println(
-						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
+						"INTRODUZCA EL NOMBRE DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre()); //NullPointerException
 				String nombre = ModValidador.validarNombre();
 				System.out.println(
 						"INTRODUZCA EL APELLIDO DEL ALUMNO QUE DESEA ASGINAR A " + cursos.get(cod).getNombre());
