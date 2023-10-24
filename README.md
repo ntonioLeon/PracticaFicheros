@@ -1,2 +1,2 @@
-# PracticaFicheros
-Practica de ficheros java
+# PawelHomenda_AntonioLeon_PracticADFIcheros
+ 
